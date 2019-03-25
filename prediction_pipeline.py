@@ -9,6 +9,7 @@ from xgboost import XGBRegressor
 from data_prep.corrections import correct_macro_df, correct_flats_info_df
 from data_prep.custom_data_creating import add_dates_info, prepare_choosed_features, \
     manual_processing, create_custom_columns
+from pred_utils.pred_utils import rmsle_exp, cross_val_split
 from configs.columns import flats_param_columns, custom_flats_param_columns
 
 # import matplotlib.pyplot as plt
@@ -33,6 +34,7 @@ test_df = correct_flats_info_df(test_df)
 
 y_price = train_df.price_doc
 del train_df["price_doc"]
+Y_log1p = y_price.apply(np.log1p)
 
 train_df = create_custom_columns(train_df)
 test_df = create_custom_columns(test_df)
@@ -58,38 +60,46 @@ train_df_processed = manual_processing(train_df_processed)
 test_df_processed = manual_processing(test_df_processed)
 
 
-y_price.apply(np.log1p)
 
 
-def cross_val_split(train_df, n_folds, fold_size):
-    sorted_dates_str = sorted(train_df.timestamp_year_month.unique())
 
-    for i in range(n_folds):
-        cur_fold_dates = sorted_dates_str[-fold_size-i:len(sorted_dates_str)-i]
 
+
+train_test_index_list = cross_val_split(train_df_processed, 5, 3)
 
 
 
 
 
 
-def rmsle_exp(y_true_log1p, y_pred_log1p):
-    y_true = np.expm1(y_true_log1p)
-    y_pred = np.expm1(y_pred_log1p)
-    return np.sqrt(np.mean(np.power(np.log(y_true + 1) - np.log(y_pred + 1), 2)))
 
 
-# X = train_df_processed.copy()
-# del X["timestamp"]
-# Y = y_price.apply(np.log)
-#
-# model = XGBRegressor()
-#
-# for (train, test), i in zip(cv.split(X, Y), range(5)):
-#     model.fit(X.iloc[train], Y.iloc[train])
-#     pred_train = model.predict(X.iloc[train])
-#     pred_test = model.predict(X.iloc[test])
 
+
+X = train_df_processed.copy()
+del X["timestamp_year_month"]
+
+X_test = test_df_processed.copy()
+del X_test["timestamp_year_month"]
+
+model = XGBRegressor()
+
+for (train, val), i in zip(train_test_index_list, range(5)):
+    model.fit(X.iloc[train], Y_log1p.iloc[train])
+    pred_train = model.predict(X.iloc[train])
+    pred_val = model.predict(X.iloc[val])
+
+    print("train RMSLE:", rmsle_exp(Y_log1p.iloc[train], pred_train))
+    print("test RMSLE:", rmsle_exp(Y_log1p.iloc[val], pred_val))
+    print("-----------------------------")
+
+model.fit(X, Y_log1p)
+pred_test_log1p = model.predict(X_test)
+pred_test = np.expm1(pred_test_log1p)
+
+df_sub = pd.DataFrame({'id': test_df.id, 'price_doc': pred_test})
+
+df_sub.to_csv('sub.csv', index=False)
 
 
 print()
