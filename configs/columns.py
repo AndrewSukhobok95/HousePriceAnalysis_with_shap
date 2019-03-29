@@ -1,4 +1,5 @@
 flats_param_columns = [
+    'timestamp',
     'full_sq',
     'life_sq',
     'kitch_sq',
@@ -6,7 +7,6 @@ flats_param_columns = [
     'floor',
     'max_floor',
     'build_year',
-    'timestamp',
     'product_type',
     'state',
     'material',

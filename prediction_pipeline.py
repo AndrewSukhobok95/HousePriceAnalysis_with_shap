@@ -60,5 +60,3 @@ df_sub = pd.DataFrame({'id': test_df.id, 'price_doc': pred_test})
 
 print()
 
-import shap
-shap.force_plot()

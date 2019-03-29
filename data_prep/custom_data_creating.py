@@ -113,14 +113,14 @@ def manual_processing(df):
 
     df["floor0"] = (df.floor == 0).astype(int)
     df["floor1"] = (df.floor == 1).astype(int)
-    df["floorhuge"] = (df.floor > 40).astype(int)
+    # df["floorhuge"] = (df.floor > 40).astype(int)
     # df["lnfloor"] = np.log(df.floor+1)
 
     df["nomax_floor"] = df.max_floor.isnull().astype(int)
     df.max_floor = df.max_floor.fillna(df.max_floor.median())
     df["max0"] = (df.max_floor == 0).astype(int)
     df["max1"] = (df.max_floor == 1).astype(int)
-    df["maxhuge"] = (df.max_floor > 80).astype(int)
+    # df["maxhuge"] = (df.max_floor > 80).astype(int)
     # df["lnmax"] = np.log(df.max_floor+1)
 
     del df["material"]
