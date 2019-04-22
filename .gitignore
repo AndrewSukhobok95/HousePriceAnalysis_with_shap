@@ -3,8 +3,10 @@
 /__pycache__
 /.idea
 /data
-/trained_models
 /data_prep/__pycache__/
 /configs/__pycache__/
 /pred_utils/__pycache__/
 /visualization/__pycache__/
+/prediction_branches/trained_models
+/prediction_branches/one_model_with_macro/.ipynb_checkpoints
+/prediction_branches/one_model_without_macro/.ipynb_checkpoints
