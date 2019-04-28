@@ -1,0 +1,146 @@
+Bibirevo#1
+Nagatinskij Zaton#1
+Tekstil'shhiki#1
+Mitino#2
+Basmannoe#0
+Nizhegorodskoe#1
+Sokol'niki#1
+Koptevo#1
+Kuncevo#1
+Kosino-Uhtomskoe#2
+Zapadnoe Degunino#2
+Presnenskoe#0
+Lefortovo#1
+Mar'ino#1
+Kuz'minki#1
+Nagornoe#1
+Gol'janovo#1
+Vnukovo#2
+Juzhnoe Tushino#1
+Severnoe Tushino#1
+Chertanovo Central'noe#1
+Fili Davydkovo#1
+Otradnoe#1
+Novo-Peredelkino#2
+Bogorodskoe#1
+Jaroslavskoe#1
+Strogino#1
+Hovrino#1
+Moskvorech'e-Saburovo#1
+Staroe Krjukovo#2
+Ljublino#1
+Caricyno#1
+Veshnjaki#1
+Danilovskoe#0
+Preobrazhenskoe#1
+Kon'kovo#1
+Brateevo#1
+Vostochnoe Izmajlovo#1
+Vyhino-Zhulebino#1
+Donskoe#1
+Novogireevo#1
+Juzhnoe Butovo#2
+Sokol#1
+Kurkino#2
+Izmajlovo#1
+Severnoe Medvedkovo#1
+Rostokino#1
+Orehovo-Borisovo Severnoe#1
+Ochakovo-Matveevskoe#1
+Taganskoe#0
+Dmitrovskoe#1
+Orehovo-Borisovo Juzhnoe#1
+Teplyj Stan#1
+Babushkinskoe#1
+Pokrovskoe Streshnevo#1
+Obruchevskoe#1
+Filevskij Park#1
+Troparevo-Nikulino#1
+Severnoe Butovo#2
+Hamovniki#0
+Solncevo#2
+Dorogomilovo#0
+Timirjazevskoe#1
+Lianozovo#1
+Pechatniki#1
+Krjukovo#2
+Jasenevo#1
+Chertanovo Severnoe#1
+Rjazanskij#1
+Silino#2
+Ivanovskoe#1
+Golovinskoe#1
+Novokosino#1
+Nagatino-Sadovniki#1
+Birjulevo Vostochnoe#1
+Severnoe Izmajlovo#1
+Sokolinaja Gora#1
+Vostochnoe Degunino#1
+Prospekt Vernadskogo#1
+Savelki#1
+Ajeroport#1
+Vojkovskoe#1
+Beskudnikovskoe#1
+Krylatskoe#1
+Juzhnoportovoe#0
+Perovo#1
+Akademicheskoe#1
+Horoshevo-Mnevniki#1
+Shhukino#1
+Kapotnja#1
+Horoshevskoe#1
+Marfino#1
+Chertanovo Juzhnoe#1
+Savelovskoe#1
+Birjulevo Zapadnoe#1
+Nekrasovka#2
+Cheremushki#1
+Sviblovo#1
+Alekseevskoe#1
+Krasnosel'skoe#0
+Kotlovka#1
+Zjuzino#1
+Ostankinskoe#1
+Tverskoe#0
+Losinoostrovskoe#1
+Butyrskoe#1
+Matushkino#2
+Metrogorodok#1
+Juzhnoe Medvedkovo#1
+Lomonosovskoe#1
+Jakimanka#0
+Mozhajskoe#1
+Levoberezhnoe#2
+Mar'ina Roshha#1
+Gagarinskoe#1
+Zamoskvorech'e#0
+Altuf'evskoe#1
+Ramenki#1
+Zjablikovo#1
+Meshhanskoe#0
+Severnoe#2
+Begovoe#0
+Arbat#0
+Poselenie Sosenskoe#2
+Poselenie Moskovskij#2
+Poselenie Pervomajskoe#2
+Poselenie Desjonovskoe#2
+Poselenie Voskresenskoe#2
+Poselenie Mosrentgen#2
+Troickij okrug#2
+Poselenie Shherbinka#2
+Poselenie Filimonkovskoe#2
+Poselenie Vnukovskoe#2
+Poselenie Marushkinskoe#2
+Poselenie Shhapovskoe#2
+Poselenie Rjazanovskoe#2
+Poselenie Kokoshkino#2
+Vostochnoe#2
+Poselenie Krasnopahorskoe#2
+Poselenie Novofedorovskoe#2
+Poselenie Voronovskoe#2
+Poselenie Klenovskoe#2
+Poselenie Rogovskoe#2
+Poselenie Kievskij#2
+Molzhaninovskoe#2
+Poselenie Mihajlovo-Jarcevskoe#2

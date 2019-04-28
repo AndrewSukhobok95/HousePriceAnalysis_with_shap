@@ -29,22 +29,32 @@ def add_price_per_sq_meter(df):
 
 
 
+
+
+
+
+
+
+
+
+
 def create_custom_columns(df):
     df = df.copy()
     df["build_count_before_1945"] = df["build_count_before_1920"] + df["build_count_1921-1945"]
-    df["build_count_wood_slag"] = df['build_count_wood'] + df['build_count_slag']
-    df['female_male_diff'] = df['female_f'] - df['male_f']
-    df['young_female_male_diff'] = df['young_female'] - df['young_male']
-    df["edu_culture_service_km"] = df["kindergarten_km"] + df["preschool_km"] + \
-                                   df["school_km"] + df["university_km"] + df["additional_education_km"] + \
-                                   df["museum_km"] + df["exhibition_km"] + df["theater_km"]
-    df["energy_industry_km"] = df['incineration_km'] + df['nuclear_reactor_km'] + \
-                               df['radiation_km'] + df['power_transmission_line_km'] + df['thermal_power_plant_km']
-    df["fitness_service_km"] = df['fitness_km'] + df['swim_pool_km'] + \
-                               df['ice_rink_km'] + df['stadium_km'] + df['basketball_km']
-    df['school_preschool_raion'] = df['preschool_education_centers_raion'] + \
-                                   df['school_education_centers_raion']
+    # df["build_count_wood_slag"] = df['build_count_wood'] + df['build_count_slag']
+    # df['female_male_diff'] = df['female_f'] - df['male_f']
+    # df['young_female_male_diff'] = df['young_female'] - df['young_male']
+    # df["edu_culture_service_km"] = df["kindergarten_km"] + df["preschool_km"] + \
+    #                                df["school_km"] + df["university_km"] + df["additional_education_km"] + \
+    #                                df["museum_km"] + df["exhibition_km"] + df["theater_km"]
+    # df["energy_industry_km"] = df['incineration_km'] + df['nuclear_reactor_km'] + \
+    #                            df['radiation_km'] + df['power_transmission_line_km'] + df['thermal_power_plant_km']
+    # df["fitness_service_km"] = df['fitness_km'] + df['swim_pool_km'] + \
+    #                            df['ice_rink_km'] + df['stadium_km'] + df['basketball_km']
+    # df['school_preschool_raion'] = df['preschool_education_centers_raion'] + \
+    #                                df['school_education_centers_raion']
     return df[sorted(df.columns.tolist())]
+
 
 
 

@@ -1,3 +1,25 @@
+flats_existing_essential_columns = [
+    'full_sq',
+    'life_sq',
+    'kitch_sq',
+    'num_room',
+    'floor',
+    'max_floor',
+    'build_year',
+    'product_type',
+    'state',
+    'material',
+    'sub_area'
+]
+
+flats_created_1st_columns = [
+    "build_count_before_1945"
+]
+
+
+
+
+
 flats_param_columns = [
     'full_sq',
     'life_sq',
@@ -66,6 +88,17 @@ flats_param_columns = [
     'indust_part'
 ]
 
+custom_flats_param_columns = [
+    "build_count_before_1945",
+    "build_count_wood_slag",
+    "female_male_diff",
+    "young_female_male_diff",
+    "edu_culture_service_km",
+    "energy_industry_km",
+    "fitness_service_km",
+    "school_preschool_raion"
+]
+
 macro_cols = [
     'macro_oil_urals',
     'macro_gdp_quart',
@@ -81,17 +114,6 @@ macro_cols = [
     'macro_mortgage_growth',
     'macro_mortgage_rate',
     'macro_unemployment'
-]
-
-custom_flats_param_columns = [
-    "build_count_before_1945",
-    "build_count_wood_slag",
-    "female_male_diff",
-    "young_female_male_diff",
-    "edu_culture_service_km",
-    "energy_industry_km",
-    "fitness_service_km",
-    "school_preschool_raion"
 ]
 
 time_columns = ['timestamp']

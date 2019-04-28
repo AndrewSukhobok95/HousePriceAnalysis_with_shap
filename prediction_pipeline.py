@@ -9,22 +9,30 @@ from datetime import datetime
 
 from pred_utils.pred_utils import rmsle_exp, cross_val_split
 from data_prep.prepare_data import prepare_data
+from data_prep.custom_data_creating import essential_columns_processing
 
-from prediction_branches.one_model_with_macro.configs.columns import flats_param_columns, \
-    custom_flats_param_columns, macro_cols
-from prediction_branches.one_model_with_macro.custom_funcs.funcs import manual_processing
+from configs.columns import flats_param_columns, custom_flats_param_columns, macro_cols
 
-train_df = pd.read_csv("../../data/train.csv", parse_dates=['timestamp'])
-test_df = pd.read_csv("../../data/test.csv", parse_dates=['timestamp'])
-macro_df = pd.read_csv("../../data/macro.csv", parse_dates=['timestamp'])
+train_df = pd.read_csv("./data/train.csv", parse_dates=['timestamp'])
+test_df = pd.read_csv("./data/test.csv", parse_dates=['timestamp'])
+macro_df = pd.read_csv("./data/macro.csv", parse_dates=['timestamp'])
+
+
+
+
+
+
+
+
+
 
 USE_FEATURES = flats_param_columns + custom_flats_param_columns + macro_cols
 train_df_processed, test_df_processed, Y_log1p = prepare_data(
     train_df, test_df, macro_df, USE_FEATURES,
     dont_touch_cols=["build_year", "timestamp", "material", "max_floor", "timestamp_year_month"]
 )
-train_df_processed = manual_processing(train_df_processed)
-test_df_processed = manual_processing(test_df_processed)
+train_df_processed = essential_columns_processing(train_df_processed)
+test_df_processed = essential_columns_processing(test_df_processed)
 
 
 
