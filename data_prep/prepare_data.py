@@ -6,6 +6,8 @@ from data_prep.corrections import correct_macro_df, correct_flats_info_df
 from data_prep.custom_data_creating import add_dates_info, prepare_choosed_features, create_custom_columns
 from data_prep.utils import prepare_sub_area_dummy_dict
 
+from configs.columns import flats_choosed_columns, drop_columns, essential_columns
+
 sub_area_dict = prepare_sub_area_dummy_dict()
 
 def essential_columns_processing(df):
@@ -61,12 +63,7 @@ def essential_columns_processing(df):
     del df['material']
     del df['sub_area']
 
-    return_essential_columns = ["full_sq", "life_sq", "kitch_sq", "num_room", "build_year", "max_floor", "state",
-                                "product_type_OwnerOccupier", "sub_area_num_indicator",
-                                "nobuild", "transaction_since_build", "floor0", "floor1", "nomax_floor",
-                                "material1", "material2", "material3", "material4", "material5", "material6"]
-
-    return df, return_essential_columns
+    return df
 
 
 
@@ -81,13 +78,17 @@ def prepare_data(train_df, test_df, macro_df):
     train_df = essential_columns_processing(train_df)
     test_df = essential_columns_processing(test_df)
 
-
-
-
-
-
     train_df = create_custom_columns(train_df)
     test_df = create_custom_columns(test_df)
+
+    train_df_processed, test_df_processed = prepare_choosed_features(
+        train_df=train_df,
+        test_df=test_df,
+        cols=["timestamp"]+list(set(train_df.columns) - set(drop_columns)),
+        dont_touch_cols=["timestamp"]
+    )
+
+
 
     macro_df = correct_macro_df(macro_df=macro_df)
     macro_df.columns = ["timestamp"] + ["macro_" + c for c in macro_df.columns if c!="timestamp"]
@@ -98,10 +99,6 @@ def prepare_data(train_df, test_df, macro_df):
     train_with_macro_df = add_dates_info(train_with_macro_df)
     test_with_macro_df = add_dates_info(test_with_macro_df)
 
-    train_df_processed, test_df_processed = prepare_choosed_features(
-        train_with_macro_df, USE_FEATURES, test_df=test_with_macro_df,
-        dont_touch_cols=dont_touch_cols)
-
     return train_df_processed, test_df_processed, Y_log1p
 
 if __name__=="__main__":
@@ -110,6 +107,8 @@ if __name__=="__main__":
     test_df = pd.read_csv("../data/test.csv", parse_dates=['timestamp'])
     macro_df = pd.read_csv("../data/macro.csv", parse_dates=['timestamp'])
 
-    essential_columns_processing(train_df)
+    # df, return_essential_columns = essential_columns_processing(train_df)
 
-    # train_df_processed, test_df_processed, Y_log1p = prepare_data(train_df, test_df, macro_df)
+    train_df_processed, test_df_processed, Y_log1p = prepare_data(train_df, test_df, macro_df)
+
+    print()

@@ -5,6 +5,7 @@ from pandas.api.types import is_numeric_dtype
 from sklearn import model_selection, preprocessing
 
 
+
 def add_dates_info(df):
     def correct_str_month(date):
         str_month = str(date.month)
@@ -26,18 +27,6 @@ def add_price_per_sq_meter(df):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def create_custom_columns(df):
     df = df.copy()
     df["build_count_before_1945"] = df["build_count_before_1920"] + df["build_count_1921-1945"]
@@ -53,10 +42,9 @@ def create_custom_columns(df):
     #                            df['ice_rink_km'] + df['stadium_km'] + df['basketball_km']
     # df['school_preschool_raion'] = df['preschool_education_centers_raion'] + \
     #                                df['school_education_centers_raion']
-    return df[sorted(df.columns.tolist())]
-
-
-
+    del df['build_count_before_1920']
+    del df['build_count_1921-1945']
+    return df
 
 
 
