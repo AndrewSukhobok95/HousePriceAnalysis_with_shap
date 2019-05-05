@@ -52,11 +52,6 @@ now_time_str = now_time.strftime("%Y_%m_%d_%H_%M")
 model_name = "xgb_{}_model_{}_{}".format(xgb.__version__, now_time_str, model_comment)
 pickle.dump(model, open("./trained_models/" + model_name + ".dat", "wb"))
 
-# json_features_data = {'features_names': USE_FEATURES}
-# # jstr = json.dumps(json_features_data, indent=4)
-# with open("../trained_models/features_json/" + model_name + '.json', 'w') as outfile:
-#     json.dump(json_features_data, outfile)
-
 pred_test_log1p = model.predict(X_test)
 pred_test = np.expm1(pred_test_log1p)
 
