@@ -4,23 +4,36 @@ import pandas as pd
 
 from data_prep.corrections import correct_macro_df, correct_flats_info_df
 from data_prep.custom_data_creating import add_dates_info, prepare_choosed_features, create_custom_columns
-from data_prep.utils import prepare_sub_area_dummy_dict
+from data_prep.utils import prepare_sub_area_dummy_dict, prepare_dict_build_year_from_sub_area,\
+    prepare_dict_max_floor_from_build_year, prepare_linear_model_for_life_sq,\
+    prepare_linear_model_for_kitch_sq
 
 from configs.columns import flats_choosed_columns, drop_columns, essential_columns
 
 sub_area_dict = prepare_sub_area_dummy_dict()
+build_year_from_sub_area_dict = prepare_dict_build_year_from_sub_area()
+max_floor_from_build_year_dict = prepare_dict_max_floor_from_build_year()
+reg_model_life_sq = prepare_linear_model_for_life_sq()
+reg_model_kitch_sq = prepare_linear_model_for_kitch_sq()
 
 def essential_columns_processing(df):
     df = df.copy()
 
     # full_sq
+    df['full_sq'].ix[df['full_sq'] > 300] = 300
     df["full_sq"] = df["full_sq"].fillna(df["full_sq"].mode().values[0])
 
     # life_sq
-    df["life_sq"] = df["life_sq"].fillna(df["life_sq"].mode().values[0])
+    df.loc[df["life_sq"] > 500, "life_sq"] = np.NaN
+    life_sq_pred = reg_model_kitch_sq.predict(df[["full_sq"]])
+    df["life_sq_pred"] = life_sq_pred
+    df["life_sq"] = df["life_sq"].fillna(df["life_sq_pred"])
 
     # kitch_sq
-    df["kitch_sq"] = df["kitch_sq"].fillna(df["kitch_sq"].mode().values[0])
+    df.loc[df["kitch_sq"] > 250, "kitch_sq"] = np.NaN
+    kitch_sq_pred = reg_model_life_sq.predict(df[["full_sq"]])
+    df["kitch_sq_pred"] = kitch_sq_pred
+    df["kitch_sq"] = df["kitch_sq"].fillna(df["kitch_sq_pred"])
 
     # num_room
     df["num_room"] = df["num_room"].fillna(df["num_room"].mode().values[0])
@@ -29,17 +42,21 @@ def essential_columns_processing(df):
     df.loc[df.build_year > 2030, "build_year"] = np.NaN
     df.loc[df.build_year < 1600, "build_year"] = np.NaN
     df["nobuild"] = df.build_year.isnull().astype(int)
-    df["transaction_since_build"] = pd.to_datetime(df.timestamp).dt.year - df.build_year
-    df.build_year = df.build_year.fillna(df.build_year.mode().values[0])
-    df["transaction_since_build"] = df["transaction_since_build"].fillna(df.transaction_since_build.mode().values[0])
+    df["build_year"] = df["build_year"].fillna(df["sub_area"].map(build_year_from_sub_area_dict))
 
+    # floor and max_floor
     # floor
     df["floor0"] = (df.floor == 0).astype(int)
     df["floor1"] = (df.floor == 1).astype(int)
-
+    df.loc[df["floor"]>df["max_floor"], "floor"] = -100
     # max_floor
+    df.loc[df["max_floor"] > 60, "max_floor"] = 60
     df["nomax_floor"] = df.max_floor.isnull().astype(int)
-    df["max_floor"] = df.max_floor.fillna(df.max_floor.mode().values[0])
+    df["max_floor"] = df["max_floor"].fillna(df["build_year"].map(max_floor_from_build_year_dict))
+    # floor
+    df["floor"] = df["floor"].fillna(df["max_floor"] // 2)
+    df.loc[df["floor"] == -100, "floor"] = np.NaN
+    df["floor"] = df["floor"].fillna(df["max_floor"])
 
     # product_type
     df["product_type_OwnerOccupier"] = (df.product_type == "OwnerOccupier").astype(int)
@@ -62,14 +79,21 @@ def essential_columns_processing(df):
     del df['product_type']
     del df['material']
     del df['sub_area']
+    del df['life_sq_pred']
+    del df['kitch_sq_pred']
 
     return df
 
 
 
-def prepare_data(train_df, test_df, macro_df):
+def _prepare_train_test_dfs(train_df, test_df):
     train_df = correct_flats_info_df(train_df)
     test_df = correct_flats_info_df(test_df)
+
+    # ulimit_price_doc = np.percentile(train_df.price_doc.values, 99)
+    # llimit_price_doc = np.percentile(train_df.price_doc.values, 1)
+    # train_df['price_doc'].ix[train_df['price_doc']>ulimit_price_doc] = ulimit_price_doc
+    # train_df['price_doc'].ix[train_df['price_doc']<llimit_price_doc] = llimit_price_doc
 
     y_price = train_df.price_doc
     del train_df["price_doc"]
@@ -88,18 +112,24 @@ def prepare_data(train_df, test_df, macro_df):
         dont_touch_cols=["timestamp"]
     )
 
+    return train_df_processed, test_df_processed, Y_log1p
 
+
+def prepare_data(train_df, test_df, macro_df):
+    train_df_processed, test_df_processed, Y_log1p = _prepare_train_test_dfs(train_df, test_df)
 
     macro_df = correct_macro_df(macro_df=macro_df)
     macro_df.columns = ["timestamp"] + ["macro_" + c for c in macro_df.columns if c!="timestamp"]
 
-    train_with_macro_df = pd.merge(train_df, macro_df, how='left', on='timestamp')
-    test_with_macro_df = pd.merge(test_df, macro_df, how='left', on='timestamp')
+    train_with_macro_df = pd.merge(train_df_processed, macro_df, how='left', on='timestamp')
+    test_with_macro_df = pd.merge(test_df_processed, macro_df, how='left', on='timestamp')
 
     train_with_macro_df = add_dates_info(train_with_macro_df)
     test_with_macro_df = add_dates_info(test_with_macro_df)
 
-    return train_df_processed, test_df_processed, Y_log1p
+    return train_with_macro_df, test_with_macro_df, Y_log1p
+
+
 
 if __name__=="__main__":
 
