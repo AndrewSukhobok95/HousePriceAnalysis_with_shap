@@ -46,7 +46,7 @@ for (train, val), i in zip(train_test_index_list, range(5)):
 
 model.fit(X, Y_log1p)
 
-model_comment = "4th"
+model_comment = "5th"
 now_time = datetime.now()
 now_time_str = now_time.strftime("%Y_%m_%d_%H_%M")
 model_name = "xgb_{}_model_{}_{}".format(xgb.__version__, now_time_str, model_comment)

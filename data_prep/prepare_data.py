@@ -16,6 +16,12 @@ max_floor_from_build_year_dict = prepare_dict_max_floor_from_build_year()
 reg_model_life_sq = prepare_linear_model_for_life_sq()
 reg_model_kitch_sq = prepare_linear_model_for_kitch_sq()
 
+def calc_full_sq_correction(x):
+    if x < 0:
+        return x/2
+    else:
+        return 0
+
 def essential_columns_processing(df):
     df = df.copy()
 
@@ -25,15 +31,23 @@ def essential_columns_processing(df):
 
     # life_sq
     df.loc[df["life_sq"] > 500, "life_sq"] = np.NaN
+    df.loc[df["life_sq"] > df["full_sq"], "life_sq"] = np.NaN
     life_sq_pred = reg_model_kitch_sq.predict(df[["full_sq"]])
     df["life_sq_pred"] = life_sq_pred
     df["life_sq"] = df["life_sq"].fillna(df["life_sq_pred"])
 
     # kitch_sq
     df.loc[df["kitch_sq"] > 250, "kitch_sq"] = np.NaN
+    df.loc[df["kitch_sq"] > df["full_sq"], "kitch_sq"] = np.NaN
     kitch_sq_pred = reg_model_life_sq.predict(df[["full_sq"]])
     df["kitch_sq_pred"] = kitch_sq_pred
     df["kitch_sq"] = df["kitch_sq"].fillna(df["kitch_sq_pred"])
+
+    # full_sq correction
+    df["full_sq_diff"] = df["full_sq"] - df["kitch_sq"] - df["life_sq"]
+    df["life_and_kitch_sq_correction"] = df["full_sq_diff"].apply(calc_full_sq_correction)
+    df["life_sq"] = df["life_sq"] + df["life_and_kitch_sq_correction"]
+    df["kitch_sq"] = df["kitch_sq"] + df["life_and_kitch_sq_correction"]
 
     # num_room
     df["num_room"] = df["num_room"].fillna(df["num_room"].mode().values[0])
@@ -81,6 +95,8 @@ def essential_columns_processing(df):
     del df['sub_area']
     del df['life_sq_pred']
     del df['kitch_sq_pred']
+    del df['full_sq_diff']
+    del df['life_and_kitch_sq_correction']
 
     return df
 

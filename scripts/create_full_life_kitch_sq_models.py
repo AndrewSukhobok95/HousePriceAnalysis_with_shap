@@ -24,11 +24,6 @@ if __name__=="__main__":
     train_df.loc[train_df.build_year > 2030, "build_year"] = np.NaN
     train_df.loc[train_df.build_year < 1600, "build_year"] = np.NaN
 
-
-
-
-
-
     ##### life_sq #####
 
     life_sq_df_plot_raw = train_df.loc[train_df["life_sq"]<=500, ["full_sq", "life_sq"]].dropna().copy()
