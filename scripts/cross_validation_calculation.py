@@ -6,8 +6,13 @@ from xgboost import XGBRegressor
 import pickle
 import json
 from datetime import datetime
-
 from sklearn.model_selection import KFold
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+color = sns.color_palette()
+sns.set()
 
 from pred_utils.pred_utils import rmsle_exp, cross_val_split
 from data_prep.prepare_data import prepare_data
@@ -47,15 +52,53 @@ for (train, val), i in zip(train_test_index_list, range(5)):
     train_rmsle_ts = rmsle_exp(Y_log1p.iloc[train], pred_train)
     test_rmsle_ts = rmsle_exp(Y_log1p.iloc[val], pred_val)
 
+    true_val = Y_log1p.iloc[val].values
+
+    fig = plt.figure()
+    plt.scatter(
+        pred_val,
+        true_val,
+        color='black'
+    )
+    plt.plot(
+        [pred_val.min(), pred_val.max()],
+        [pred_val.min(), pred_val.max()],
+        color='blue',
+        linewidth=3
+    )
+    plt.xlabel("prediction")
+    plt.ylabel("true_value")
+    # plt.show()
+    fig.savefig('./../imgs/prediction/prediction_ts_{}.png'.format(i), dpi=fig.dpi)
+
     result_metrics.append(["ts_split_{}".format(i), train_rmsle_ts, test_rmsle_ts])
 
 kf = KFold(n_splits=5, random_state=2105, shuffle=True)
-for train, val in kf.split(X):
+for (train, val), i in zip(kf.split(X), range(5)):
     pred_train = model.predict(X.iloc[train])
     pred_val = model.predict(X.iloc[val])
 
     train_rmsle_kfold = rmsle_exp(Y_log1p.iloc[train], pred_train)
     test_rmsle_kfold = rmsle_exp(Y_log1p.iloc[val], pred_val)
+
+    true_val = Y_log1p.iloc[val].values
+
+    fig = plt.figure()
+    plt.scatter(
+        pred_val,
+        true_val,
+        color='black'
+    )
+    plt.plot(
+        [pred_val.min(), pred_val.max()],
+        [pred_val.min(), pred_val.max()],
+        color='blue',
+        linewidth=3
+    )
+    plt.xlabel("prediction")
+    plt.ylabel("true_value")
+    # plt.show()
+    fig.savefig('./../imgs/prediction/prediction_kfold_{}.png'.format(i), dpi=fig.dpi)
 
     result_metrics.append(["kfold_split", train_rmsle_kfold, test_rmsle_kfold])
 
@@ -65,5 +108,9 @@ df_metrics = pd.DataFrame(result_metrics,
 df_metrics.to_csv("./../metrics.csv")
 
 print("done!")
+
+
+
+
 
 
