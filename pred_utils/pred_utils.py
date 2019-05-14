@@ -17,6 +17,8 @@ def cross_val_split(train_df, n_folds, fold_size):
         cur_fold_train_dates = sorted_dates_str[:-fold_size - n_folds + 1 + i]
         cur_fold_test_dates = sorted_dates_str[-fold_size - n_folds + 1 + i:len(sorted_dates_str) - n_folds + 1 + i]
 
+        print(cur_fold_test_dates)
+
         cur_fold_train_bool_index = train_df.timestamp_year_month.isin(cur_fold_train_dates)
         cur_fold_test_bool_index = train_df.timestamp_year_month.isin(cur_fold_test_dates)
 

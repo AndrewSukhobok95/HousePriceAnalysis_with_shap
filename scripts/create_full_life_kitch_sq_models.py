@@ -35,7 +35,7 @@ if __name__=="__main__":
     )
     plt.xlabel("full_sq")
     plt.ylabel("life_sq")
-    # plt.show()
+    # plt.show()x   
     fig.savefig('./../imgs/features_prep/raw_full_sq_vs_life_sq.png', dpi=fig.dpi)
 
     cond1_life_sq = train_df["life_sq"] < 0.9 * train_df["full_sq"]

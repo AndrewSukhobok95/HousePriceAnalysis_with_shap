@@ -73,7 +73,7 @@ for (train, val), i in zip(train_test_index_list, range(5)):
 
     result_metrics.append(["ts_split_{}".format(i), train_rmsle_ts, test_rmsle_ts])
 
-kf = KFold(n_splits=5, random_state=2105, shuffle=True)
+kf = KFold(n_splits=12, random_state=2105, shuffle=True)
 for (train, val), i in zip(kf.split(X), range(5)):
     pred_train = model.predict(X.iloc[train])
     pred_val = model.predict(X.iloc[val])
@@ -100,7 +100,7 @@ for (train, val), i in zip(kf.split(X), range(5)):
     # plt.show()
     fig.savefig('./../imgs/prediction/prediction_kfold_{}.png'.format(i), dpi=fig.dpi)
 
-    result_metrics.append(["kfold_split", train_rmsle_kfold, test_rmsle_kfold])
+    result_metrics.append(["kfold_split_{}".format(i), train_rmsle_kfold, test_rmsle_kfold])
 
 df_metrics = pd.DataFrame(result_metrics,
                           columns=["split_type", "train_rmsle", "test_rmsle"])
