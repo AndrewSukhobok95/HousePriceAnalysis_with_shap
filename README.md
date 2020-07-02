@@ -4,6 +4,9 @@ Experiments with SHAP package on [Sberbank](https://www.kaggle.com/c/sberbank-ru
 
 Competition link: [https://www.kaggle.com/c/sberbank-russian-housing-market](https://www.kaggle.com/c/sberbank-russian-housing-market)
 
+- Algorithm: XGBoostRegressor
+- Main script: `prediction_pipeline.py`
+
 ### Visualizations
 
 **Data Preprocessing:**
