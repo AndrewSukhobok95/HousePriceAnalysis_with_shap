@@ -45,7 +45,7 @@ Competition link: [https://www.kaggle.com/c/sberbank-russian-housing-market](htt
 
 ![](imgs/shap/force_plot/0.png)
 
-- Example of Force Plot (observation 3)
+- Dependence Plot
     - `full_sq`
     - `build_year`
     - `macro_cpi`
